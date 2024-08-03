@@ -28,7 +28,7 @@ const ChatWindow = () => {
           </Avatar.Group>
         </div>
       </div>
-      <Divider className="flex-none" />
+      <Divider className="flex-none" style={{ width: '100%' }} />
       <div className="messageStyle scrollbar-hide flex h-[calc(100%-56px)] flex-col justify-end overflow-y-auto p-3">
         <div className="message">
           <Message text="Test" photoURL={null} displayName="Kha" createAt={123} />

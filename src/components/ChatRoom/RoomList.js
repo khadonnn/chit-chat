@@ -1,35 +1,43 @@
-import React from 'react';
+import React, { useContext, useMemo } from 'react';
 import { Collapse, Typography, Button, Avatar } from 'antd';
 import { PlusSquareOutlined } from '@ant-design/icons';
-
-const { Panel } = Collapse;
-const collapseItems = [
-  {
-    key: '1',
-    label: 'Room',
-    children: (
-      <div>
-        <div className="flex items-center rounded-lg border border-gray-300 p-2">
-          <Avatar className="mr-3">A</Avatar>
-          <Typography.Link>Room 1</Typography.Link>
-        </div>
-        <div className="flex items-center border p-2">
-          <Avatar className="mr-3">B</Avatar>
-          <Typography.Link>Room 2</Typography.Link>
-        </div>
-        <div className="flex items-center border p-2">
-          <Avatar className="mr-3">C</Avatar>
-          <Typography.Link>Room 3</Typography.Link>
-        </div>
-
-        <Button icon={<PlusSquareOutlined />} type="text" className="flex-between flex">
-          Add
-        </Button>
-      </div>
-    ),
-  },
-];
+import useFirestore from '../../hooks/useFirestore.js';
+import { AuthContext } from '../../Context/AuthProvider';
 
 export default function RoomList() {
+  const { uid } = useContext(AuthContext);
+  const roomCondition = useMemo(() => {
+    return {
+      fieldName: 'members',
+      operator: 'array-contains',
+      compareValue: uid,
+    };
+  }, [uid]);
+  const rooms = useFirestore('rooms', roomCondition);
+  console.log({ rooms });
+
+  const collapseItems = [
+    {
+      key: '1',
+      label: 'Room',
+      children: (
+        <div>
+          {rooms.map((room) => {
+            const avatarText = room.name ? room.name.charAt(0).toUpperCase() : '?';
+            return (
+              <div key={room.id} className="flex items-center border p-2">
+                <Avatar>{avatarText}</Avatar>
+                <Typography.Link style={{ marginLeft: '8px' }}>{room.name}</Typography.Link>
+              </div>
+            );
+          })}
+
+          <Button icon={<PlusSquareOutlined />} type="text" className="flex-between flex">
+            Add
+          </Button>
+        </div>
+      ),
+    },
+  ];
   return <Collapse ghost defaultActiveKey={['1']} items={collapseItems} />;
 }

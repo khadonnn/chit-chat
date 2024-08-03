@@ -2,9 +2,16 @@
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 import { getStorage } from 'firebase/storage';
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 import { getAdditionalUserInfo } from 'firebase/auth';
-import { getAuth, signInWithPopup, FacebookAuthProvider, GoogleAuthProvider, onAuthStateChanged } from 'firebase/auth';
+import {
+  getAuth,
+  connectAuthEmulator,
+  signInWithPopup,
+  FacebookAuthProvider,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+} from 'firebase/auth';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -30,6 +37,11 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 const fbProvider = new FacebookAuthProvider();
 const ggProvider = new GoogleAuthProvider();
+
+if (window.location.hostname === 'localhost') {
+  connectAuthEmulator(auth, 'http://localhost:9099');
+  connectFirestoreEmulator(db, 'localhost', 8080);
+}
 
 export const loginWithFacebook = async () => {
   try {

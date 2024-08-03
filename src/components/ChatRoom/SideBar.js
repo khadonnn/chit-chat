@@ -2,6 +2,7 @@ import React from 'react';
 import { Row, Col } from 'antd';
 import UserInfo from './UserInfo';
 import RoomList from './RoomList';
+
 const SideBar = () => {
   return (
     <Row className="relative flex w-full items-center justify-center">

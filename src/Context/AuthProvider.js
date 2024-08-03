@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, createContext } from 'react';
+import React, { useEffect, useState, createContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth, onAuthStateChanged } from '../firebase/config';
 import { Spin } from 'antd';
@@ -12,12 +12,12 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        const { displayName, email, uid, photoUrl } = user;
+        const { displayName, email, uid, photoURL } = user;
         setUser({
           displayName,
           email,
           uid,
-          photoUrl,
+          photoURL,
         });
         setIsLoading(false);
         navigate('/');
@@ -32,7 +32,11 @@ const AuthProvider = ({ children }) => {
   }, [navigate]);
   return (
     <AuthContext.Provider value={user}>
-      {isLoading ? <Spin className="flex h-screen items-center justify-center" /> : children}
+      {isLoading ? (
+        <Spin className="flex h-screen items-center justify-center" />
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   );
 };
