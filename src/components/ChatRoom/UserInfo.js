@@ -24,10 +24,12 @@ const UserInfo = () => {
       </div>
       <Divider style={{ width: '100%' }} />
       <div className="ml-4 mt-4 flex items-center">
-        <Avatar className="mr-3" src={photoURL}>
+        <Avatar className="mr-3" size="large" src={photoURL}>
           {photoURL ? '' : displayName?.charAt(0).toUpperCase()}
         </Avatar>
-        <Typography.Text className="font-medium">{displayName}</Typography.Text>
+        <Typography.Text className="text-base font-semibold">
+          {displayName}
+        </Typography.Text>
       </div>
     </div>
   );

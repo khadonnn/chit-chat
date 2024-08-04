@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
 import { db } from '../firebase/config';
-import { collection, query, where, orderBy, onSnapshot } from 'firebase/firestore';
+import {
+  collection,
+  query,
+  where,
+  orderBy,
+  onSnapshot,
+} from 'firebase/firestore';
 
 const useFirestore = (collectionName, condition) => {
   const [documents, setDocuments] = useState([]);
@@ -13,7 +19,10 @@ const useFirestore = (collectionName, condition) => {
       if (!condition.compareValue || !condition.compareValue.length) {
         return;
       }
-      q = query(q, where(condition.fieldName, condition.operator, condition.compareValue));
+      q = query(
+        q,
+        where(condition.fieldName, condition.operator, condition.compareValue)
+      );
     }
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
