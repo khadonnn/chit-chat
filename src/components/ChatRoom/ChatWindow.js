@@ -1,34 +1,38 @@
 import { UserAddOutlined } from '@ant-design/icons';
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { AppContext } from '../../Context/AppProvide';
 
 import { Button, Tooltip, Avatar, Divider, Form, Input } from 'antd';
 import Message from './Message';
 const ChatWindow = () => {
-  const { rooms, selectedRoomId } = useContext(AppContext);
-  console.log({ rooms, selectedRoomId });
+  const { members, selectedRoom } = useContext(AppContext);
+  // const selectedRoom = useMemo(() => {
+  //   return rooms.find((room) => room.id === selectedRoomId);
+  // }, [rooms, selectedRoomId]);
+
   return (
     <div className="h-[89vh]">
       <div className="headerStyle flex-end flex h-[56px] items-center justify-around">
         <div>
-          <p className="font-medium">Room 1</p>
-          <span>This is room</span>
+          <p className="font-medium">{selectedRoom?.name || 'Join to start'}</p>
+          <span>{selectedRoom?.description || 'Have a good day 🔥'}</span>
         </div>
         <div className="flex items-center justify-center">
           <Button icon={<UserAddOutlined />}>Add Friend</Button>
           <Avatar.Group size="medium" max={{ count: 2 }}>
-            <Tooltip title="A" placement="top">
-              <Avatar>A</Avatar>
-            </Tooltip>
-            <Tooltip title="B">
-              <Avatar>B</Avatar>
-            </Tooltip>
-            <Tooltip title="c">
-              <Avatar>c</Avatar>
-            </Tooltip>
-            <Tooltip title="d">
-              <Avatar>d</Avatar>
-            </Tooltip>
+            {members.map((member) => (
+              <Tooltip
+                placement="top"
+                title={member.displayName}
+                key={member.id}
+              >
+                <Avatar src={member.photoURL}>
+                  {member.photoURL
+                    ? ''
+                    : member.displayName?.charAt(0).toUpperCase()}
+                </Avatar>
+              </Tooltip>
+            ))}
           </Avatar.Group>
         </div>
       </div>
