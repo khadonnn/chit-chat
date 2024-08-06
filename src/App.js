@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AuthProvider from './Context/AuthProvider';
 import AppProvide from './Context/AppProvide';
 import AddRoomModal from './components/Modals/AddRoomModal';
+import InviteMemberModal from './components/Modals/InviteMemberModal';
 function App() {
   return (
     <div className="App">
@@ -15,6 +16,7 @@ function App() {
               <Route path="/" element={<ChatRoom />} />
             </Routes>
             <AddRoomModal />
+            <InviteMemberModal />
           </AppProvide>
         </AuthProvider>
       </BrowserRouter>

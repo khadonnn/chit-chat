@@ -13,6 +13,7 @@ export const AppContext = createContext();
 
 export default function AppProvide({ children }) {
   const [isAddRoomVisible, setIsAddRoomVisible] = useState(false);
+  const [isInviteMemberVisible, setIsInviteMemberVisible] = useState(false);
   const [selectedRoomId, setSelectedRoomId] = useState('');
   const { uid } = useContext(AuthContext);
 
@@ -48,6 +49,8 @@ export default function AppProvide({ children }) {
         selectedRoomId,
         setSelectedRoomId,
         selectedRoom,
+        isInviteMemberVisible,
+        setIsInviteMemberVisible,
       }}
     >
       {children}

@@ -1,15 +1,10 @@
 import React from 'react';
 import { Row, Col, Typography, Button } from 'antd';
-import app, {
-  auth,
-  db,
-  storage,
-  loginWithFacebook,
-  onAuthStateChanged,
-} from '../../firebase/config';
+import { db, loginWithFacebook } from '../../firebase/config';
 import { useNavigate } from 'react-router-dom';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import logo from '../../img/logo.png';
+import generateKeywords from '../../firebase/service';
 
 const { Title } = Typography;
 const Login = () => {
@@ -28,6 +23,7 @@ const Login = () => {
             uid: user.uid,
             providerId: additionalUserInfo.providerId,
             createdAt: serverTimestamp(),
+            keywords: generateKeywords(user.displayName),
           });
           navigate('/');
         } catch (e) {
@@ -51,7 +47,7 @@ const Login = () => {
           <Title className="text-center" level={3}>
             LOGIN
           </Title>
-          <Button className="mb-2 w-full">Login Google</Button>
+          {/* <Button className="mb-2 w-full">Login Google</Button> */}
           <Button className="mb-2 w-full" onClick={handleFbLogin}>
             Login FaceBook
           </Button>
