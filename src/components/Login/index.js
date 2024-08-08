@@ -71,12 +71,15 @@ const Login = () => {
           <Title className="text-center" level={3}>
             LOGIN
           </Title>
-          <Button className="mb-2 w-full" onClick={handleGoogleLogin}>
+          <Button
+            className="mb-2 w-full font-medium"
+            onClick={handleGoogleLogin}
+          >
             Login Google
           </Button>
-          <Button className="mb-2 w-full" onClick={handleFbLogin}>
+          {/* <Button className="mb-2 w-full" onClick={handleFbLogin}>
             Login FaceBook
-          </Button>
+          </Button> */}
         </Col>
       </Row>
     </div>
