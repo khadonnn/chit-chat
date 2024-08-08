@@ -38,10 +38,10 @@ const storage = getStorage(app);
 const fbProvider = new FacebookAuthProvider();
 const ggProvider = new GoogleAuthProvider();
 
-if (window.location.hostname === 'localhost') {
-  connectAuthEmulator(auth, 'http://localhost:9099');
-  connectFirestoreEmulator(db, 'localhost', 8080);
-}
+// if (window.location.hostname === 'localhost') {
+//   connectAuthEmulator(auth, 'http://localhost:9099');
+//   connectFirestoreEmulator(db, 'localhost', 8080);
+// }
 
 export const loginWithFacebook = async () => {
   try {
@@ -54,6 +54,21 @@ export const loginWithFacebook = async () => {
     return { user, additionalUserInfo };
   } catch (error) {
     console.error('Error during Facebook login', error);
+    return null;
+  }
+};
+export const loginWithGoogle = async () => {
+  try {
+    // Thực hiện đăng nhập với Google
+    const result = await signInWithPopup(auth, ggProvider);
+    const user = result.user;
+    console.log({ user });
+    // Lấy additionalUserInfo
+    const additionalUserInfo = getAdditionalUserInfo(result);
+    console.log('Additional User Info:', additionalUserInfo);
+    return { user, additionalUserInfo };
+  } catch (error) {
+    console.error('Error during Google login', error);
     return null;
   }
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Col, Typography, Button } from 'antd';
-import { db, loginWithFacebook } from '../../firebase/config';
+import { db, loginWithFacebook, loginWithGoogle } from '../../firebase/config';
 import { useNavigate } from 'react-router-dom';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import logo from '../../img/logo.png';
@@ -12,6 +12,30 @@ const Login = () => {
 
   const handleFbLogin = async () => {
     const result = await loginWithFacebook();
+    if (result) {
+      const { additionalUserInfo, user } = result;
+      if (additionalUserInfo?.isNewUser) {
+        try {
+          await addDoc(collection(db, 'users'), {
+            displayName: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+            uid: user.uid,
+            providerId: additionalUserInfo.providerId,
+            createdAt: serverTimestamp(),
+            keywords: generateKeywords(user.displayName),
+          });
+          navigate('/');
+        } catch (e) {
+          console.error('Error adding document: ', e);
+        }
+      } else {
+        navigate('/');
+      }
+    }
+  };
+  const handleGoogleLogin = async () => {
+    const result = await loginWithGoogle();
     if (result) {
       const { additionalUserInfo, user } = result;
       if (additionalUserInfo?.isNewUser) {
@@ -47,7 +71,9 @@ const Login = () => {
           <Title className="text-center" level={3}>
             LOGIN
           </Title>
-          {/* <Button className="mb-2 w-full">Login Google</Button> */}
+          <Button className="mb-2 w-full" onClick={handleGoogleLogin}>
+            Login Google
+          </Button>
           <Button className="mb-2 w-full" onClick={handleFbLogin}>
             Login FaceBook
           </Button>

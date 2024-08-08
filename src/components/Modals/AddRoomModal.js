@@ -15,12 +15,12 @@ export default function AddRoomModal() {
     try {
       const formData = form.getFieldsValue();
 
-      // console.log('formData:', formData);
       await addDoc(collection(db, 'rooms'), {
         ...formData,
         members: [uid],
         createdAt: serverTimestamp(),
       });
+      console.log({ formData });
 
       notification.success({
         message: 'Thành công',

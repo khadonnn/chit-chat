@@ -1,13 +1,7 @@
-import React, {
-  useEffect,
-  useMemo,
-  useState,
-  useContext,
-  createContext,
-} from 'react';
+import React, { useMemo, useState, useContext, createContext } from 'react';
 
 import { AuthContext } from './AuthProvider.js';
-import useFirestore from '../hooks/useFirestore.js';
+import useFirestore from '../hooks/useFirestore';
 
 export const AppContext = createContext();
 
@@ -16,7 +10,7 @@ export default function AppProvide({ children }) {
   const [isInviteMemberVisible, setIsInviteMemberVisible] = useState(false);
   const [selectedRoomId, setSelectedRoomId] = useState('');
   const { uid } = useContext(AuthContext);
-
+  console.log({ uid });
   const roomCondition = useMemo(() => {
     return {
       fieldName: 'members',
@@ -26,9 +20,14 @@ export default function AppProvide({ children }) {
   }, [uid]);
   //rooms
   const rooms = useFirestore('rooms', roomCondition);
+  console.log({ rooms });
+  console.log({ roomCondition });
+
   const selectedRoom = useMemo(() => {
     return rooms.find((room) => room.id === selectedRoomId) || {};
   }, [rooms, selectedRoomId]);
+  console.log({ selectedRoom });
+
   //member
   const userCondition = useMemo(() => {
     return {

@@ -27,6 +27,7 @@ const AuthProvider = ({ children }) => {
         navigate('/login');
       }
     });
+    console.log({ user });
     // Cleanup
     return () => unsubscribe();
   }, [navigate]);

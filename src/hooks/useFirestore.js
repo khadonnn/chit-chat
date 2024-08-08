@@ -13,15 +13,16 @@ const useFirestore = (collectionName, condition) => {
 
   useEffect(() => {
     let collectionRef = collection(db, collectionName);
-    let q = query(collectionRef, orderBy('createdAt'));
+    let q = query(collectionRef, orderBy('createdAt', 'desc'));
 
     if (condition) {
       if (!condition.compareValue || !condition.compareValue.length) {
         return;
       }
       q = query(
-        q,
-        where(condition.fieldName, condition.operator, condition.compareValue)
+        collectionRef,
+        where(condition.fieldName, condition.operator, condition.compareValue),
+        orderBy('createdAt', 'asc')
       );
     }
 
@@ -30,6 +31,7 @@ const useFirestore = (collectionName, condition) => {
         ...doc.data(),
         id: doc.id,
       }));
+
       setDocuments(docs);
     });
 
